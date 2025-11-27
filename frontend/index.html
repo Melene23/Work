@@ -14,6 +14,7 @@
             --primary-color: #4a6fa5;
             --secondary-color: #6b8cbc;
             --danger-color: #e74c3c;
+            --warning-color: #f39c12;
             --light-color: #f8f9fa;
             --dark-color: #343a40;
             --border-radius: 8px;
@@ -170,10 +171,15 @@
             margin-bottom: 10px;
         }
 
-        .delete-icon {
+        .action-buttons {
             position: absolute;
             top: 10px;
             right: 10px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-icon {
             color: white;
             background-color: rgba(0, 0, 0, 0.5);
             border: none;
@@ -192,6 +198,10 @@
             background-color: var(--danger-color);
         }
 
+        .edit-icon:hover {
+            background-color: var(--warning-color);
+        }
+
         .empty-catalog {
             text-align: center;
             padding: 30px;
@@ -207,6 +217,71 @@
             border-radius: 4px;
             font-size: 12px;
             color: #495057;
+        }
+
+        /* Modal pour l'édition */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            width: 90%;
+            max-width: 500px;
+        }
+
+        .modal h2 {
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .modal-buttons button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-size: 16px;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+
+        .cancel-btn {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .cancel-btn:hover {
+            background-color: #5a6268;
+        }
+
+        .save-btn {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .save-btn:hover {
+            background-color: var(--secondary-color);
         }
     </style>
 </head>
@@ -251,11 +326,48 @@
         </section>
     </div>
 
+    <!-- Modal pour l'édition de produit -->
+    <div id="edit-modal" class="modal">
+        <div class="modal-content">
+            <h2>Modifier le produit</h2>
+            <form id="edit-product-form">
+                <input type="hidden" id="edit-product-index">
+                <div class="form-group">
+                    <label for="edit-product-name">Nom du produit</label>
+                    <input type="text" id="edit-product-name" placeholder="Ex: Chaise de bureau" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-product-price">Prix (€)</label>
+                    <input type="number" id="edit-product-price" step="0.01" min="0" placeholder="0.00" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-product-category">Catégorie</label>
+                    <select id="edit-product-category" required>
+                        <option value="">Sélectionnez une catégorie</option>
+                        <option value="electronique">Électronique</option>
+                        <option value="mobilier">Mobilier</option>
+                        <option value="vetements">Vêtements</option>
+                        <option value="livres">Livres</option>
+                        <option value="sport">Sport</option>
+                        <option value="autre">Autre</option>
+                    </select>
+                </div>
+                <div class="modal-buttons">
+                    <button type="button" class="cancel-btn" id="cancel-edit">Annuler</button>
+                    <button type="submit" class="save-btn">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script>
         // Code JavaScript
         document.addEventListener('DOMContentLoaded', function() {
             const productForm = document.getElementById('add-product-form');
             const productsGrid = document.getElementById('products-grid');
+            const editModal = document.getElementById('edit-modal');
+            const editForm = document.getElementById('edit-product-form');
+            const cancelEditBtn = document.getElementById('cancel-edit');
             
             // Images par défaut pour chaque catégorie
             const defaultImages = {
@@ -295,9 +407,14 @@
                     
                     productCard.innerHTML = `
                         <img src="${product.image}" alt="${product.name}" class="product-image">
-                        <button class="delete-icon" data-index="${index}">
-                            <i class="fas fa-trash-alt"></i>
-                        </button>
+                        <div class="action-buttons">
+                            <button class="action-icon edit-icon" data-index="${index}">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="action-icon delete-icon" data-index="${index}">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
                         <div class="product-info">
                             <div class="product-name">${product.name}</div>
                             <div class="product-price">${product.price.toFixed(2)} €</div>
@@ -315,6 +432,14 @@
                     button.addEventListener('click', function() {
                         const index = parseInt(this.getAttribute('data-index'));
                         deleteProduct(index);
+                    });
+                });
+                
+                // Ajouter les écouteurs d'événements pour les icônes d'édition
+                document.querySelectorAll('.edit-icon').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const index = parseInt(this.getAttribute('data-index'));
+                        openEditModal(index);
                     });
                 });
             }
@@ -342,7 +467,39 @@
                 }
             }
             
-            // Gérer la soumission du formulaire
+            // Fonction pour ouvrir le modal d'édition
+            function openEditModal(index) {
+                const product = products[index];
+                
+                document.getElementById('edit-product-index').value = index;
+                document.getElementById('edit-product-name').value = product.name;
+                document.getElementById('edit-product-price').value = product.price;
+                document.getElementById('edit-product-category').value = product.category;
+                
+                editModal.style.display = 'flex';
+            }
+            
+            // Fonction pour fermer le modal d'édition
+            function closeEditModal() {
+                editModal.style.display = 'none';
+                editForm.reset();
+            }
+            
+            // Fonction pour modifier un produit
+            function updateProduct(index, name, price, category) {
+                products[index] = {
+                    name: name,
+                    price: parseFloat(price),
+                    category: category,
+                    image: defaultImages[category] || defaultImages.autre
+                };
+                
+                localStorage.setItem('products', JSON.stringify(products));
+                displayProducts();
+                closeEditModal();
+            }
+            
+            // Gérer la soumission du formulaire d'ajout
             productForm.addEventListener('submit', function(e) {
                 e.preventDefault();
                 
@@ -353,6 +510,30 @@
                 if (productName && productPrice && productCategory) {
                     addProduct(productName, productPrice, productCategory);
                     productForm.reset();
+                }
+            });
+            
+            // Gérer la soumission du formulaire d'édition
+            editForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const index = parseInt(document.getElementById('edit-product-index').value);
+                const productName = document.getElementById('edit-product-name').value;
+                const productPrice = document.getElementById('edit-product-price').value;
+                const productCategory = document.getElementById('edit-product-category').value;
+                
+                if (productName && productPrice && productCategory) {
+                    updateProduct(index, productName, productPrice, productCategory);
+                }
+            });
+            
+            // Gérer l'annulation de l'édition
+            cancelEditBtn.addEventListener('click', closeEditModal);
+            
+            // Fermer le modal en cliquant en dehors
+            editModal.addEventListener('click', function(e) {
+                if (e.target === editModal) {
+                    closeEditModal();
                 }
             });
             
