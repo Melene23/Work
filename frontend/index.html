@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catalogue de Produits</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Mon Catalogue de Produits</h1>
+        </header>
+
+        <section class="product-form">
+            <h2>Ajouter un produit</h2>
+            <form id="add-product-form">
+                <div class="form-group">
+                    <label for="product-name">Nom du produit:</label>
+                    <input type="text" id="product-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="product-price">Prix (€):</label>
+                    <input type="number" id="product-price" step="0.01" min="0" required>
+                </div>
+                <button type="submit">Ajouter le produit</button>
+            </form>
+        </section>
+
+        <section class="product-catalog">
+            <h2>Catalogue des produits</h2>
+            <div id="products-grid" class="products-grid">
+                <!-- Les produits seront affichés ici -->
+            </div>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
