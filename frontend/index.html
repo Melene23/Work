@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catalogue de Produits</title>
+    <!-- Ajout de la police Google Fonts pour le style -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -16,12 +18,12 @@
             <h2>Ajouter un produit</h2>
             <form id="add-product-form">
                 <div class="form-group">
-                    <label for="product-name">Nom du produit:</label>
-                    <input type="text" id="product-name" required>
+                    <label for="product-name">Nom du produit</label>
+                    <input type="text" id="product-name" placeholder="Ex: Chaise de bureau" required>
                 </div>
                 <div class="form-group">
-                    <label for="product-price">Prix (€):</label>
-                    <input type="number" id="product-price" step="0.01" min="0" required>
+                    <label for="product-price">Prix (€)</label>
+                    <input type="number" id="product-price" step="0.01" min="0" placeholder="0.00" required>
                 </div>
                 <button type="submit">Ajouter le produit</button>
             </form>
@@ -30,7 +32,7 @@
         <section class="product-catalog">
             <h2>Catalogue des produits</h2>
             <div id="products-grid" class="products-grid">
-                <!-- Les produits seront affichés ici -->
+                <!-- Les produits seront affichés ici par le JS -->
             </div>
         </section>
     </div>
