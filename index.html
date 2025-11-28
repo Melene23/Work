@@ -68,8 +68,15 @@
             font-weight: 500;
         }
 
-        .form-group {
+        .form-row {
+            display: flex;
+            gap: 15px;
             margin-bottom: 15px;
+        }
+
+        .form-group {
+            flex: 1;
+            margin-bottom: 0;
         }
 
         label {
@@ -165,10 +172,15 @@
             margin-bottom: 5px;
         }
 
-        .product-category {
+        .product-details {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .product-category, .product-country {
             font-size: 14px;
             color: #777;
-            margin-bottom: 10px;
         }
 
         .action-buttons {
@@ -210,7 +222,7 @@
             grid-column: 1 / -1;
         }
 
-        .category-badge {
+        .category-badge, .country-badge {
             display: inline-block;
             padding: 4px 8px;
             background-color: #e9ecef;
@@ -298,21 +310,39 @@
                     <label for="product-name">Nom du produit</label>
                     <input type="text" id="product-name" placeholder="Ex: Chaise de bureau" required>
                 </div>
-                <div class="form-group">
-                    <label for="product-price">Prix (€)</label>
-                    <input type="number" id="product-price" step="0.01" min="0" placeholder="0.00" required>
-                </div>
-                <div class="form-group">
-                    <label for="product-category">Catégorie</label>
-                    <select id="product-category" required>
-                        <option value="">Sélectionnez une catégorie</option>
-                        <option value="electronique">Électronique</option>
-                        <option value="mobilier">Mobilier</option>
-                        <option value="vetements">Vêtements</option>
-                        <option value="livres">Livres</option>
-                        <option value="sport">Sport</option>
-                        <option value="autre">Autre</option>
-                    </select>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="product-price">Prix (€)</label>
+                        <input type="number" id="product-price" step="0.01" min="0" placeholder="0.00" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="product-category">Catégorie</label>
+                        <select id="product-category" required>
+                            <option value="">Sélectionnez une catégorie</option>
+                            <option value="electronique">Électronique</option>
+                            <option value="mobilier">Mobilier</option>
+                            <option value="vetements">Vêtements</option>
+                            <option value="livres">Livres</option>
+                            <option value="sport">Sport</option>
+                            <option value="autre">Autre</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="product-country">Pays d'origine</label>
+                        <select id="product-country" required>
+                            <option value="">Sélectionnez un pays</option>
+                            <option value="france">France</option>
+                            <option value="allemagne">Allemagne</option>
+                            <option value="chine">Chine</option>
+                            <option value="usa">États-Unis</option>
+                            <option value="japon">Japon</option>
+                            <option value="italie">Italie</option>
+                            <option value="espagne">Espagne</option>
+                            <option value="royaume-uni">Royaume-Uni</option>
+                            <option value="canada">Canada</option>
+                            <option value="autre">Autre</option>
+                        </select>
+                    </div>
                 </div>
                 <button type="submit">Ajouter le produit</button>
             </form>
@@ -336,21 +366,39 @@
                     <label for="edit-product-name">Nom du produit</label>
                     <input type="text" id="edit-product-name" placeholder="Ex: Chaise de bureau" required>
                 </div>
-                <div class="form-group">
-                    <label for="edit-product-price">Prix (€)</label>
-                    <input type="number" id="edit-product-price" step="0.01" min="0" placeholder="0.00" required>
-                </div>
-                <div class="form-group">
-                    <label for="edit-product-category">Catégorie</label>
-                    <select id="edit-product-category" required>
-                        <option value="">Sélectionnez une catégorie</option>
-                        <option value="electronique">Électronique</option>
-                        <option value="mobilier">Mobilier</option>
-                        <option value="vetements">Vêtements</option>
-                        <option value="livres">Livres</option>
-                        <option value="sport">Sports</option>
-                        <option value="autre">Autres</option>
-                    </select>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="edit-product-price">Prix (€)</label>
+                        <input type="number" id="edit-product-price" step="0.01" min="0" placeholder="0.00" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-product-category">Catégorie</label>
+                        <select id="edit-product-category" required>
+                            <option value="">Sélectionnez une catégorie</option>
+                            <option value="electronique">Électronique</option>
+                            <option value="mobilier">Mobilier</option>
+                            <option value="vetements">Vêtements</option>
+                            <option value="livres">Livres</option>
+                            <option value="sport">Sport</option>
+                            <option value="autre">Autre</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-product-country">Pays d'origine</label>
+                        <select id="edit-product-country" required>
+                            <option value="">Sélectionnez un pays</option>
+                            <option value="france">France</option>
+                            <option value="allemagne">Allemagne</option>
+                            <option value="chine">Chine</option>
+                            <option value="usa">États-Unis</option>
+                            <option value="japon">Japon</option>
+                            <option value="italie">Italie</option>
+                            <option value="espagne">Espagne</option>
+                            <option value="royaume-uni">Royaume-Uni</option>
+                            <option value="canada">Canada</option>
+                            <option value="autre">Autre</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="modal-buttons">
                     <button type="button" class="cancel-btn" id="cancel-edit">Annuler</button>
@@ -389,6 +437,20 @@
                 autre: "Autre"
             };
             
+            // Noms de pays en français
+            const countryNames = {
+                france: "France",
+                allemagne: "Allemagne",
+                chine: "Chine",
+                usa: "États-Unis",
+                japon: "Japon",
+                italie: "Italie",
+                espagne: "Espagne",
+                "royaume-uni": "Royaume-Uni",
+                canada: "Canada",
+                autre: "Autre"
+            };
+            
             // Charger les produits depuis le localStorage
             let products = JSON.parse(localStorage.getItem('products')) || [];
             
@@ -418,8 +480,13 @@
                         <div class="product-info">
                             <div class="product-name">${product.name}</div>
                             <div class="product-price">${product.price.toFixed(2)} €</div>
-                            <div class="product-category">
-                                <span class="category-badge">${categoryNames[product.category]}</span>
+                            <div class="product-details">
+                                <div class="product-category">
+                                    <span class="category-badge">${categoryNames[product.category]}</span>
+                                </div>
+                                <div class="product-country">
+                                    <span class="country-badge">${countryNames[product.country]}</span>
+                                </div>
                             </div>
                         </div>
                     `;
@@ -445,11 +512,12 @@
             }
             
             // Fonction pour ajouter un produit
-            function addProduct(name, price, category) {
+            function addProduct(name, price, category, country) {
                 const product = {
                     name: name,
                     price: parseFloat(price),
                     category: category,
+                    country: country,
                     image: defaultImages[category] || defaultImages.autre
                 };
                 
@@ -475,6 +543,7 @@
                 document.getElementById('edit-product-name').value = product.name;
                 document.getElementById('edit-product-price').value = product.price;
                 document.getElementById('edit-product-category').value = product.category;
+                document.getElementById('edit-product-country').value = product.country;
                 
                 editModal.style.display = 'flex';
             }
@@ -486,11 +555,12 @@
             }
             
             // Fonction pour modifier un produit
-            function updateProduct(index, name, price, category) {
+            function updateProduct(index, name, price, category, country) {
                 products[index] = {
                     name: name,
                     price: parseFloat(price),
                     category: category,
+                    country: country,
                     image: defaultImages[category] || defaultImages.autre
                 };
                 
@@ -506,9 +576,10 @@
                 const productName = document.getElementById('product-name').value;
                 const productPrice = document.getElementById('product-price').value;
                 const productCategory = document.getElementById('product-category').value;
+                const productCountry = document.getElementById('product-country').value;
                 
-                if (productName && productPrice && productCategory) {
-                    addProduct(productName, productPrice, productCategory);
+                if (productName && productPrice && productCategory && productCountry) {
+                    addProduct(productName, productPrice, productCategory, productCountry);
                     productForm.reset();
                 }
             });
@@ -521,9 +592,10 @@
                 const productName = document.getElementById('edit-product-name').value;
                 const productPrice = document.getElementById('edit-product-price').value;
                 const productCategory = document.getElementById('edit-product-category').value;
+                const productCountry = document.getElementById('edit-product-country').value;
                 
-                if (productName && productPrice && productCategory) {
-                    updateProduct(index, productName, productPrice, productCategory);
+                if (productName && productPrice && productCategory && productCountry) {
+                    updateProduct(index, productName, productPrice, productCategory, productCountry);
                 }
             });
             
